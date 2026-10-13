@@ -1,46 +1,54 @@
 import 'dart:io';
 
-void main(){
-  print("===============================================================");
-  print('Pizza Price: "Small: 5 USD, Medium: 7 USD, Large: 10 USD"');
-  print("===============================================================");
-  print("please enter your pizza size (small, medium, or large): ");
+void main() {
+  print('===============================================================');
+  print('Pizza Prices: Small = 5, Medium = 7, Large = 10 USD');
+  print('===============================================================');
 
-  var size;
-  int quantity;
-  Map prices = {
-    "small": 5,
-    "medium": 7,
-    "large": 10
-  };
+  String size;
+  while (true) {
+    print('Enter your pizza size (small, medium, or large):');
+    final input = stdin.readLineSync()?.trim().toLowerCase();
 
-  while(true){
-    size = stdin.readLineSync()!;
-    if(size == "small" || size == "medium" || size == "large"){
+    if (input != null &&
+        (input == 'small' || input == 'medium' || input == 'large')) {
+      size = input;
       break;
-    }else{
-      print("Invalid size. Please enter small, medium, or large.");
+    } else {
+      print('Invalid size. Please enter small, medium, or large.');
     }
   }
 
-  print("how many pizzas do you want to order?");
-
-  while(true){
+  int quantity;
+  while (true) {
+    print('How many pizzas do you want to order?');
     final input = stdin.readLineSync();
-    final parsedQuantity = int.tryParse(input ?? '');
-    if(parsedQuantity != null && parsedQuantity > 1){
+    final parsedQuantity = int.tryParse(input?.trim() ?? '');
+
+    if (parsedQuantity != null && parsedQuantity > 0) {
       quantity = parsedQuantity;
       break;
-    }else{
-      print("Invalid quantity. Please enter an integer greater than 1.");
+    } else {
+      print('Invalid quantity. Please enter a positive integer.');
     }
   }
 
-  print("You have ordered ${quantity} ${size} pizzas.");
-  print("your total price is: ${quantity * prices[size]!} USD");
+  int pricePerPizza;
+  switch (size) {
+    case 'small':
+      pricePerPizza = 5;
+      break;
+    case 'medium':
+      pricePerPizza = 7;
+      break;
+    case 'large':
+      pricePerPizza = 10;
+      break;
+    default:
+      pricePerPizza = 0;
+  }
 
-
-  
-
-
+  final totalPayment = quantity * pricePerPizza;
+  print('You ordered $quantity $size pizza${quantity == 1 ? '' : 's'}.');
+  print('Total payment: $totalPayment USD');
 }
